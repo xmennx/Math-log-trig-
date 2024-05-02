@@ -1,25 +1,36 @@
 class Character {
     constructor(baseAttack) {
-        this.baseAttack = baseAttack;
-        this.distance = 0;
+        this._baseAttack = baseAttack;
+        this._distance = 0;
+        this._attack = 0; 
+        this._stoned = false;
     }
 
-    setAttack(distance) {
-        // Учитываем линейное падение силы урона в зависимости от расстояния
-        if (distance === 1) {
-            this.attack = this.baseAttack;
-        } else {
-            this.attack = this.baseAttack * (1 - (distance - 1) * 0.1);
-        }
-
-        // Учитываем возможность дурмана
-        if (this.stoned) {
-            this.attack -= Math.log2(distance) * 5;
-        }
+    set attack(value) {
+        this._attack = value;
     }
 
-    getAttack() {
-        return this.attack;
+    get attack() {
+        if (this._stoned) {
+            this._attack -= Math.log2(this._distance) * 5;
+        }
+        return this._attack;
+    }
+
+    set baseAttack(value) {
+        this._baseAttack = value;
+    }
+
+    get baseAttack() {
+        return this._baseAttack;
+    }
+
+    set distance(value) {
+        this._distance = value;
+    }
+
+    get distance() {
+        return this._distance;
     }
 
     set stoned(value) {
@@ -28,17 +39,5 @@ class Character {
 
     get stoned() {
         return this._stoned;
-    }
-}
-
-class Magician extends Character {
-    constructor(baseAttack) {
-        super(baseAttack);
-    }
-}
-
-class Daemon extends Character {
-    constructor(baseAttack) {
-        super(baseAttack);
     }
 }
