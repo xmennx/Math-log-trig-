@@ -17,14 +17,6 @@ class Character {
         return this._attack;
     }
 
-    set baseAttack(value) {
-        this._baseAttack = value;
-    }
-
-    get baseAttack() {
-        return this._baseAttack;
-    }
-
     set distance(value) {
         this._distance = value;
     }

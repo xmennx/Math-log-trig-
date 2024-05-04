@@ -1,21 +1,48 @@
-const { Magician, Daemon } = require('./app');
+const Character = require('./app');
 
-describe('Magician class', () => {
-    test('Magician attack with stoned', () => {
-        const magician = new Magician(100);
-        magician.stoned = true;
-        magician.distance = 2;
-        magician.setAttack(magician.distance);
-        expect(magician.getAttack()).toBe(85);
+describe('Character', () => {
+    let character;
+
+    beforeEach(() => {
+        character = new Character(10);
+        character.distance = 5;
+        character.stoned = false;
     });
-});
 
-describe('Daemon class', () => {
-    test('Daemon attack with stoned', () => {
-        const daemon = new Daemon(120);
-        daemon.stoned = true;
-        daemon.distance = 3;
-        daemon.setAttack(daemon.distance);
-        expect(daemon.getAttack()).toBeCloseTo(101.15387860532076);
+    it('должен правильно устанавливать базовую атаку', () => {
+        expect(character._baseAttack).to.equal(10);
+    });
+
+    it('должен правильно устанавливать расстояние', () => {
+        expect(character.distance).to.equal(5);
+    });
+
+    it('должен правильно устанавливать статус "stoned"', () => {
+        expect(character.stoned).to.be.false;
+    });
+
+    it('должен правильно вычислять атаку без модификатора "stoned"', () => {
+        expect(character.attack).to.equal(10);
+    });
+
+    it('должен правильно вычислять атаку с модификатором "stoned"', () => {
+        character.stoned = true;
+        expect(character.attack).to.equal(10 - Math.log2(5) * 5);
+    });
+
+    it('должен обновлять атаку после изменения расстояния', () => {
+        character.distance = 3;
+        expect(character.attack).to.equal(10);
+    });
+
+    it('должен обновлять атаку после изменения статуса "stoned"', () => {
+        character.stoned = true;
+        character.distance = 7;
+        expect(character.attack).to.equal(10 - Math.log2(7) * 5);
+    });
+
+    it('должен позволять установить атаку напрямую', () => {
+        character.attack = 15;
+        expect(character.attack).to.equal(15);
     });
 });
